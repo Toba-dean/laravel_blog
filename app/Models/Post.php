@@ -24,7 +24,7 @@ class Post
     $this->slug = $slug;
   }
 
-  public static function findAll()
+  public static function all()
   {
     return cache()->rememberForever("post.all", function () {
       return collect(File::files(resource_path("posts/")))
@@ -58,6 +58,15 @@ class Post
 
   static public function find($slug)
   {
-    return static::findAll()->firstWhere("slug", $slug);
+    return static::all()->firstWhere("slug", $slug);
+  }
+
+  static public function findorfail($slug)
+  {
+    $post = static::find($slug);
+    if ($post === null) {
+      throw new ModelNotFoundException();
+    }
+    return $post;
   }
 }
