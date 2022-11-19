@@ -13,14 +13,17 @@ class Post extends Model
     // protected $fillable = ['title', 'excerpt', 'body', 'slug'];
     protected $guarded = [];
 
+    protected $with = ['category', 'author'];
+
     // Relationship
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function user()
+    public function author()
     {
-        return $this->belongsTo(User::class);
+        // Second argument is the value for the foreign key
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
